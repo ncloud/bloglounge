@@ -64,8 +64,8 @@
 					continue;
 				if ($key == 'filter') {
 					$filterArray = func::array_trim((explode(',', $value)));
-					$value = implode(',', array_slice($filterArray, 0, 3));
-					;
+				//	$value = implode(',', array_slice($filterArray, 0, 3));
+					$value = implode(',', $filterArray);
 				} else if($key == 'visibility') {
 					$feedVisibilityChanged = $value;
 				} else if($key == 'group') {
