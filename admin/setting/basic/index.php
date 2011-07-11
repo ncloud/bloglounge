@@ -218,6 +218,10 @@
 					<option value="4" <?php if ($thumbnailLimit == '4') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 4);?></option>
 					<option value="5" <?php if ($thumbnailLimit == '5') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 5);?></option>
 					<option value="6" <?php if ($thumbnailLimit == '6') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 6);?></option>
+					<option value="7" <?php if ($thumbnailLimit == '7') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 7);?></option>
+					<option value="8" <?php if ($thumbnailLimit == '8') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 8);?></option>
+					<option value="9" <?php if ($thumbnailLimit == '9') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 9);?></option>
+					<option value="10" <?php if ($thumbnailLimit == '10') { ?>selected="selected"<?php } ?>><?php echo _f('%1개', 10);?></option>
 				</select>				
 <?php
 			$arg = ob_get_contents();

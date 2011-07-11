@@ -139,6 +139,9 @@
 	);
 	
 	if(isset($accessInfo['named']['http'])) {
-		$accessInfo['address'] = 'http://'.urldecode(implode('/',$accessInfo['pass']));
+		$accessInfo['address'] = 'http://'.urldecode(implode('/',$accessInfo['pass']));		
+		if(substr($request_uri,strlen($request_uri)-1) == '/') { // for FeedItem::getIdByURL
+			$accessInfo['address'] .= '/';
+		}
 	}
 ?>
