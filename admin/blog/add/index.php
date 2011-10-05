@@ -28,10 +28,10 @@
 			if($addUser == '-1') {
 				// 회원 추가
 				$password = substr(md5(mktime()), 0, 10);
-				$name = _f('비밀번호 : %1', $password);
+				$name = _f('임시 비밀번호 : %1', $password);
 				$email = 'user@fotowall.net';
 				if(!User::add($username, $password, $name, $email)) {
-					$add_usser_error = $username;
+					$add_user_error = $username;
 				} else {
 					$addUser = User::getId($username);
 				}
@@ -53,7 +53,6 @@
 					header("Location: $targetURL");
 					exit;
 			}
-
 		}
 	}
 
@@ -145,7 +144,7 @@
 			<?php echo drawGrayBoxEnd();?>
 	</div>
 <?php
-	} else if($add_user_error) {
+	} else if(isset($add_user_error) && $add_user_error) {
 ?>		
 	<div class="wrap title_wrap">
 		<h3><?php echo _t("블로그 추가");?></h3>

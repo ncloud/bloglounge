@@ -1,6 +1,6 @@
 <?php
 	function requireComponent($name) {
-		if (!ereg('^[[:alnum:]]+[[:alnum:].]+$', $name)) {
+		if (!preg_match('/^[[:alnum:]]+[[:alnum:].]+$/', $name)) {
 			return false;
 		}
 		include_once(ROOT . '/components/'.$name.'.php');

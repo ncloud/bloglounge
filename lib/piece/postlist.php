@@ -111,7 +111,7 @@
 						$sp_posts = $skin->parseTag('post_thumbnail_exist', 'post_thumbnail_nonexistence', $sp_posts);
 					}
 
-					list($feedId, $feedOwner, $feedTitle,$feedBlogUrl, $logoFile) = Feed::gets($item['feed'],'id,owner,title,blogURL,logo');
+					list($feedId, $feedOwner, $feedTitle,$feedBlogURL, $logoFile) = Feed::gets($item['feed'],'id,owner,title,blogURL,logo');
 
 					$src_logo = $skin->cutSkinTag('cond_logo');
 
