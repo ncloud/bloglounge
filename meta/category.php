@@ -10,15 +10,16 @@
 	if(empty($searchKeyword)) {
 		// TODO: 정렬옵션, 포스트 개수 스킨 옵션에 추가
 		
-		$categories = Category::getCategoriesAll();
+		$categories = Category::getCategoriesAll('id, name, count');
 		
 		foreach($categories as $categoryKey=>$category) {
-			list($posts) = FeedItem::getFeedItems($searchType, $category['id'], $searchExtraValue, 1, 2);
-			
 			$categories[$categoryKey]['posts'] = $posts;
 			
 			unset($posts);
 		}
+		
+		include ROOT . '/lib/piece/categorylist.php';
+
 		
 	} else {
 		$customQuery = $event->on('Query.feedItems', '');
