@@ -13,6 +13,7 @@
 		$categories = Category::getCategoriesAll('id, name, count');
 		
 		foreach($categories as $categoryKey=>$category) {
+			list($posts) = FeedItem::getFeedItems($searchType, $category['id'], $searchExtraValue, 1, 2);
 			$categories[$categoryKey]['posts'] = $posts;
 			
 			unset($posts);

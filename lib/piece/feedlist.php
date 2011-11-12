@@ -78,13 +78,30 @@
 				$src_feedrecent_rep = $skin->cutSkinTag('feedrecent_rep');
 				$s_feedrecent_rep = '';
 
-					if ($recents = FeedItem::getRecentFeedItemsByFeed($feed['id'], $skinConfig->feedListRecentFeedList)) {	
+					if ($recents = FeedItem::getRecentFeedItemsByFeed($feed['id'], $skinConfig->feedListRecentFeedList)) {
 						$sp_feedrecent_rep = '';
 						foreach($recents as $recent) {
 							$link_url = $config->addressType == 'id' ? $service['path'].'/go/'.$recent['id'] : $service['path'].'/go/'.$recent['permalink'];
+							
+							$recent['thumbnail'] = '';
+							if($media = Media::getMedia($recent['thumbnailId'])) {
+								$recent['thumbnail'] = $media['thumbnail'];	
+							}
 
-							$s_feedrecent_rep = $skin->parseTag('feeds_recent_url', $recent['permalink'], $src_feedrecent_rep);
-							$s_feedrecent_rep = $skin->parseTag('feeds_recent_linkurl', $link_url, $src_feedrecent_rep);
+							$src_thumbnail = $skin->cutSkinTag('cond_thumbnail', $src_feedrecent_rep);
+							$thumbnailFile =  $event->on('Text.postThumbnail', Media::getMediaFile($recent['thumbnail']));
+		
+							if(!empty($thumbnailFile)) {
+								$s_thumbnail = (!Validator::is_empty($thumbnailFile)) ? $skin->parseTag('feeds_recent_thumbnail', $thumbnailFile, $src_thumbnail) : '';
+								$s_feedrecent_rep = $skin->dressOn('cond_thumbnail', $src_thumbnail, $s_thumbnail, $src_feedrecent_rep);	
+								$s_feedrecent_rep = $skin->parseTag('feeds_recent_thumbnail_exist', 'post_thumbnail_exist', $s_feedrecent_rep);
+							} else {
+								$s_feedrecent_rep = $skin->dressOn('cond_thumbnail', $src_thumbnail, '', $src_feedrecent_rep);
+								$s_feedrecent_rep = $skin->parseTag('feeds_recent_thumbnail_exist', 'post_thumbnail_nonexistence', $s_feedrecent_rep);
+							}
+							
+							$s_feedrecent_rep = $skin->parseTag('feeds_recent_url', $recent['permalink'], $s_feedrecent_rep);
+							$s_feedrecent_rep = $skin->parseTag('feeds_recent_linkurl', $link_url, $s_feedrecent_rep);
 							$s_feedrecent_rep = $skin->parseTag('feeds_recent_title', $recent['title'], $s_feedrecent_rep);
 							$s_feedrecent_rep = $skin->parseTag('feeds_recent_date', date('Y-m-d H:i',$recent['written']), $s_feedrecent_rep);
 							$sp_feedrecent_rep .= $s_feedrecent_rep;
@@ -106,6 +123,7 @@
 				$sp_feeds = $skin->parseTag('feeds_lastupdate', $event->on('Text.feedLastupdate', (Validator::is_digit($feed['lastUpdate']) ? date('Y-m-d H:i', $feed['lastUpdate']) : $feed['lastUpdate'])), $sp_feeds);
 				//$sp_feeds = $skin->parseTag('feeds_search_url', $service['path'].'/?blogURL='.str_replace('http://','',Func::lastSlashDelete($feed['blogURL'])), $sp_feeds);
 				$sp_feeds = $skin->parseTag('feeds_linkurl', $service['path'].'/blog/'.$feed['id'], $sp_feeds);
+				$sp_feeds = $skin->parseTag('feeds_feedurl', $service['path'].'/rss/blog/'.$feed['id'], $sp_feeds);
 
 				$s_feeds_rep .= $event->on('Text.feed', $sp_feeds);
 				$sp_feeds = '';

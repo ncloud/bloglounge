@@ -26,7 +26,7 @@
 
 		function getAll($itemId) {
 			global $database, $db;
-			$db->query('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id AND c.custom ="y") WHERE i.id='.$itemId);
+			$db->query('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id AND c.custom ="y") WHERE i.id='.$itemId . ' GROUP BY i.id');
 			
 			
 			return $db->fetchArray();
@@ -566,30 +566,30 @@
 
 		function getFeedItemsByFeedId($feedId, $count) {		
 			global $db, $database;
-			return $db->queryAll('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id) WHERE i.visibility = "y" AND i.feed = '. $feedId .' ORDER BY i.written DESC LIMIT '. $count);
+			return $db->queryAll('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id) WHERE i.visibility = "y" AND i.feed = '. $feedId .' GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 		}
 
 		function getRecentFeedItems($count) {		
 			global $db, $database;
-			return $db->queryAll('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id) WHERE i.visibility = "y" ORDER BY i.written DESC LIMIT '. $count);
+			return $db->queryAll('SELECT i.*,c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item=i.id) WHERE i.visibility = "y" GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 		}
 
 		function getRecentFeedItemsByFeed($feeds, $count) {		
 			global $db, $database;
 			if(is_array($feeds)) {
-				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE i.feed IN ('. implode(',',$feeds) .') AND i.visibility = "y" ORDER BY i.written DESC LIMIT '. $count);
+				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE i.feed IN ('. implode(',',$feeds) .') AND i.visibility = "y" GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 			} else {
-				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE i.feed = ' . $feeds . ' AND i.visibility = "y" ORDER BY i.written DESC LIMIT '. $count);
+				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE i.feed = ' . $feeds . ' AND i.visibility = "y" GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 			}
 		}	
 		
 		function getRecentFeedItemsByCategory($categories, $count) {		
 			global $db, $database;
 			if(is_array($categories)) {
-				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE c.category IN ('. implode(',',$categories) .') AND i.visibility = "y" ORDER BY i.written DESC LIMIT '. $count);
+				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE c.category IN ('. implode(',',$categories) .') AND i.visibility = "y" GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 			} else {
 				
-				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE c.category = ' . $categories . ' AND i.visibility = "y" ORDER BY i.written DESC LIMIT '. $count);
+				return $db->queryAll('SELECT i.*, c.category AS category FROM '.$database['prefix'].'FeedItems i LEFT JOIN '.$database['prefix'].'CategoryRelations c ON (c.item = i.id) WHERE c.category = ' . $categories . ' AND i.visibility = "y" GROUP BY i.id ORDER BY i.written DESC LIMIT '. $count);
 			}
 		}
 
